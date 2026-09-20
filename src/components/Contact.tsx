@@ -80,9 +80,17 @@ export default function Contact() {
               </p>
 
               {status === "success" ? (
-                <div className="bg-stone-100 dark:bg-stone-900 border-l-4 border-blue-600 p-6">
-                  <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Message Sent</h3>
-                  <p className="text-sm text-stone-600 dark:text-stone-400">Thank you for reaching out. A member of our team will get back to you shortly.</p>
+                <div className="bg-stone-100 dark:bg-stone-900 border-l-4 border-blue-600 p-6 flex flex-col items-start gap-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Message Sent</h3>
+                    <p className="text-sm text-stone-600 dark:text-stone-400">Thank you for reaching out. A member of our team will get back to you shortly.</p>
+                  </div>
+                  <button 
+                    onClick={() => setStatus("idle")}
+                    className="text-[0.7rem] tracking-[0.1em] uppercase font-bold text-blue-600 hover:text-blue-700 transition-colors"
+                  >
+                    ← Send another message
+                  </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-5">
