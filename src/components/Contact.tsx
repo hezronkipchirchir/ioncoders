@@ -6,12 +6,34 @@ import React, { useState } from "react";
 export default function Contact() {
   const { ref: leftRef,  inView: leftIn  } = useInView({ fallbackMs: 600 });
   const { ref: rightRef, inView: rightIn } = useInView({ fallbackMs: 700 });
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSubmitted(true);
-    // Future: Handle actual form submission here
+    setStatus("loading");
+
+    const formData = new FormData(e.currentTarget);
+    
+    // Add your Web3Forms Access Key here (via environment variable)
+    formData.append("access_key", process.env.NEXT_PUBLIC_WEB3FORMS_KEY || "");
+    
+    // Optional: Add a subject line for the email
+    formData.append("subject", "New Project Inquiry from IONCODERS Website");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch (err) {
+      setStatus("error");
+    }
   };
 
   return (
@@ -38,7 +60,7 @@ export default function Contact() {
             <div className="space-y-4 text-sm text-stone-600 dark:text-stone-400">
               <p>
                 <strong className="text-stone-900 dark:text-white uppercase tracking-wider text-[0.65rem]">Email:</strong><br />
-                hello@ioncoders.com
+                hello@ioncoders.tech
               </p>
               <p>
                 <strong className="text-stone-900 dark:text-white uppercase tracking-wider text-[0.65rem]">Location:</strong><br />
@@ -57,7 +79,7 @@ export default function Contact() {
                 Project Inquiry
               </p>
 
-              {submitted ? (
+              {status === "success" ? (
                 <div className="bg-stone-100 dark:bg-stone-900 border-l-4 border-blue-600 p-6">
                   <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Message Sent</h3>
                   <p className="text-sm text-stone-600 dark:text-stone-400">Thank you for reaching out. A member of our team will get back to you shortly.</p>
@@ -67,16 +89,16 @@ export default function Contact() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="flex flex-col gap-2">
                       <label htmlFor="name" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Name</label>
-                      <input id="name" type="text" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="Jane Doe" required />
+                      <input id="name" name="name" type="text" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="Jane Doe" required />
                     </div>
                     <div className="flex flex-col gap-2">
                       <label htmlFor="email" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Email</label>
-                      <input id="email" type="email" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="jane@example.com" required />
+                      <input id="email" name="email" type="email" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="jane@example.com" required />
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="service" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Service Needed</label>
-                    <select id="service" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white appearance-none">
+                    <select id="service" name="service" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white appearance-none">
                       <option>Web Development</option>
                       <option>Mobile App Development</option>
                       <option>UI/UX Design</option>
@@ -86,10 +108,22 @@ export default function Contact() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="message" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Project Details</label>
-                    <textarea id="message" rows={4} className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="Tell us about your project goals and timeline..." required />
+                    <textarea id="message" name="message" rows={4} className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="Tell us about your project goals and timeline..." required />
                   </div>
-                  <button type="submit" className="mt-2 px-6 py-4 bg-blue-600 text-white text-[0.76rem] tracking-[0.14em] uppercase font-bold hover:bg-blue-500 active:scale-[.98] transition-all duration-200 w-full sm:w-auto self-start">
-                    Send Message
+                  
+                  {/* Honeypot field to prevent spam bots */}
+                  <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
+                  {status === "error" && (
+                    <p className="text-red-500 text-xs font-bold">Something went wrong. Please try again or email us directly.</p>
+                  )}
+
+                  <button 
+                    type="submit" 
+                    disabled={status === "loading"}
+                    className="mt-2 px-6 py-4 bg-blue-600 text-white text-[0.76rem] tracking-[0.14em] uppercase font-bold hover:bg-blue-500 active:scale-[.98] transition-all duration-200 w-full sm:w-auto self-start disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {status === "loading" ? "Sending..." : "Send Message"}
                   </button>
                 </form>
               )}
