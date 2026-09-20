@@ -1,26 +1,98 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─── Dark mode via data-theme attribute ──────────────────── */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/* ─── Brand Tokens ────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-stone-50:  #F5F5F3;
+  --color-stone-100: #EEECEA;
+  --color-stone-200: #E2E0DC;
+  --color-stone-300: #C8C5BF;
+  --color-stone-400: #9E9A93;
+  --color-stone-500: #716E68;
+  --color-stone-600: #5A5752;
+  --color-stone-700: #44423E;
+  --color-stone-800: #2D2B28;
+  --color-stone-900: #1A1917;
+  --color-stone-950: #0F0F0E;
+  --color-blue-400:  #60A5FA;
+  --color-blue-500:  #3B82F6;
+  --color-blue-600:  #1B5EF7;
+  --color-blue-700:  #1749C8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ─── Base ────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #1A1917;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  overflow-x: hidden;
 }
+[data-theme='dark'] body { background: #0F0F0E; color: #F5F5F3; }
+
+/* ─── CSS-only Theme Toggle Icons ─────────────────────────── */
+.icon-sun { opacity: 0; transform: scale(0.5) rotate(90deg); }
+.icon-moon { opacity: 1; transform: scale(1) rotate(0); }
+
+[data-theme='dark'] .icon-sun { opacity: 1; transform: scale(1) rotate(0); }
+[data-theme='dark'] .icon-moon { opacity: 0; transform: scale(0.5) rotate(-90deg); }
+
+
+/* ─── Global animated architectural grid background ───────────── */
+.global-bg-anim {
+  position: fixed;
+  inset: -100px;
+  width: calc(100vw + 200px);
+  height: calc(100vh + 200px);
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M80 0L0 0 0 80' fill='none' stroke='%231B5EF7' stroke-width='1.5' stroke-opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  animation: gridPan 30s linear infinite;
+}
+.global-crosses {
+  position: fixed;
+  inset: -100px;
+  width: calc(100vw + 200px);
+  height: calc(100vh + 200px);
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 36v8M36 40h8' fill='none' stroke='%231A1917' stroke-width='1.5' stroke-opacity='0.15' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  animation: gridPan 30s linear infinite;
+}
+
+[data-theme='dark'] .global-bg-anim {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M80 0L0 0 0 80' fill='none' stroke='%23F5F5F3' stroke-width='1.5' stroke-opacity='0.04'/%3E%3C/svg%3E");
+}
+[data-theme='dark'] .global-crosses {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 36v8M36 40h8' fill='none' stroke='%23F5F5F3' stroke-width='1.5' stroke-opacity='0.15' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+@keyframes gridPan {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-80px, -80px); }
+}
+
+/* ─── CSS keyframe animations (hero — always visible) ─────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.anim-fade-up       { animation: fadeInUp 0.6s ease-out both; }
+.anim-fade-up-d1    { animation: fadeInUp 0.6s 0.10s ease-out both; }
+.anim-fade-up-d2    { animation: fadeInUp 0.6s 0.20s ease-out both; }
+.anim-fade-up-d3    { animation: fadeInUp 0.6s 0.30s ease-out both; }
+.anim-fade-up-d4    { animation: fadeInUp 0.6s 0.40s ease-out both; }
+.anim-fade-up-d5    { animation: fadeInUp 0.6s 0.55s ease-out both; }
+.anim-fade-up-d6    { animation: fadeInUp 0.6s 0.70s ease-out both; }
+
+/* ─── Scroll-triggered sections ───────────────────────────── */
+.section-hidden  { opacity: 0; transform: translateY(16px); transition: opacity 0.65s ease-out, transform 0.65s ease-out; }
+.section-visible { opacity: 1; transform: translateY(0); }

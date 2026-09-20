@@ -5,6 +5,7 @@ export interface Project {
   technologies: string[];
   imageUrl: string;
   projectUrl?: string;
+  status?: "Active" | "Beta" | "In Development";
   isPlaceholder?: boolean;
 }
 
@@ -13,6 +14,7 @@ export interface Activity {
   title: string;
   description: string;
   index: string;
+  detail: string;
 }
 
 export interface CommunityArea {
@@ -24,4 +26,9 @@ export interface Principle {
   id: string;
   title: string;
   description: string;
+}
+
+export interface Stat {
+  value: string;
+  label: string;
 }

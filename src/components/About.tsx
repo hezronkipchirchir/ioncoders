@@ -1,82 +1,83 @@
 "use client";
 
 import { useInView } from "@/hooks/useInView";
-import { Principle } from "@/lib/types";
 
-const principles: Principle[] = [
+const principles = [
   {
-    id: "learn",
-    title: "LEARN",
-    description: "Grow through knowledge and experience. We embrace curiosity, share what we know, and push each other to go deeper.",
+    id: "plan", index: "01", title: "DISCOVER", tagline: "Understand the problem.",
+    description:
+      "We don't just write code; we solve problems. We start by understanding your business, your users, and your goals to architect the right solution from day one.",
   },
   {
-    id: "build",
-    title: "BUILD",
-    description: "Turn ideas into practical projects. We believe in creating things — products, tools, and solutions that make a difference.",
+    id: "engineer", index: "02", title: "ENGINEER", tagline: "Robust architecture.",
+    description:
+      "Our team builds scalable, high-performance software using modern, reliable technology stacks. We prioritize clean code, security, and exceptional user experiences.",
   },
   {
-    id: "connect",
-    title: "CONNECT",
-    description: "Grow through collaboration and community. We are stronger together — supporting, motivating, and learning from each other.",
+    id: "deliver", index: "03", title: "DELIVER", tagline: "Ship and scale.",
+    description:
+      "We deliver functional, polished products on time. Post-launch, we provide the support and iteration needed to help your software scale gracefully alongside your business.",
   },
 ];
 
 export default function About() {
-  const { ref: headRef, inView: headIn } = useInView();
-  const { ref: bodyRef, inView: bodyIn } = useInView();
+  const { ref: secRef, inView } = useInView({ fallbackMs: 600 });
 
   return (
-    <section id="about" className="bg-white py-24 lg:py-36">
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        {/* Header */}
+    <section id="about" className="bg-transparent py-12 lg:py-28 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-5 lg:px-10">
+
+        {/* Heading + intro */}
         <div
-          ref={headRef as React.RefObject<HTMLDivElement>}
-          className={`mb-16 lg:mb-24 transition-all duration-700 ease-out ${
-            headIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
+          ref={secRef as React.RefObject<HTMLDivElement>}
+          className={`mb-10 lg:mb-20 section-hidden ${inView ? "section-visible" : ""}`}
         >
-          <span className="text-[0.7rem] tracking-[0.3em] uppercase text-blue-600 font-semibold block mb-4">
-            About
+          <span className="text-[0.62rem] sm:text-[0.68rem] tracking-[0.3em] uppercase text-blue-600 font-bold block mb-4">
+            About Us
           </span>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-end">
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-black text-stone-900 tracking-tight leading-[0.95]">
-              WHO
-              <br />
-              WE ARE
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-20 items-end">
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-stone-900 dark:text-white tracking-tight leading-[0.92]">
+              WHO<br />WE ARE
             </h2>
-            <p className="text-stone-500 text-lg leading-relaxed max-w-lg">
-              IONCODERS is a community built around technology, collaboration,
-              and continuous learning. We bring together people who are
-              passionate about coding and creating solutions through technology —
-              from beginners taking their first steps to experienced engineers
-              pushing boundaries.
-            </p>
+            <div className="space-y-4">
+              <p className="text-stone-700 dark:text-stone-300 text-sm sm:text-base lg:text-lg leading-relaxed">
+                IONCODERS is a professional collective of technology experts based in Kenya. 
+                We bring together specialized engineering and design talent to build digital 
+                products that drive results.
+              </p>
+              <p className="text-stone-500 dark:text-stone-400 text-sm sm:text-base leading-relaxed">
+                Whether you are a startup looking to build your MVP, or an established enterprise 
+                needing to scale your infrastructure, our team has the technical depth and creative 
+                vision to bring your ideas to life.
+              </p>
+            </div>
           </div>
         </div>
 
         {/* Divider */}
-        <div className="h-px bg-stone-100 mb-16 lg:mb-24" />
+        <div className="h-px bg-stone-200 dark:bg-stone-800 mb-10 lg:mb-20" />
 
         {/* Principles */}
-        <div
-          ref={bodyRef as React.RefObject<HTMLDivElement>}
-          className={`grid grid-cols-1 md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-stone-100 transition-all duration-700 delay-150 ease-out ${
-            bodyIn ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-          }`}
-        >
-          {principles.map((p, i) => (
-            <div key={p.id} className="px-0 md:px-10 py-10 md:py-0 first:pl-0 last:pr-0">
-              <span className="text-[0.65rem] tracking-[0.25em] text-stone-300 font-medium block mb-4">
-                0{i + 1}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-y-10 md:gap-y-0 md:divide-x divide-stone-200 dark:divide-stone-800">
+          {principles.map((p) => (
+            <div key={p.id} className="md:px-8 lg:px-10 first:pl-0 last:pr-0">
+              <span className="text-[0.62rem] tracking-[0.3em] text-stone-400 dark:text-stone-600 font-bold block mb-3">
+                {p.index}
               </span>
-              <h3 className="text-2xl font-black text-stone-900 tracking-tight mb-3">
+              <h3 className="text-2xl lg:text-3xl font-black text-stone-900 dark:text-white tracking-tight mb-1">
                 {p.title}
               </h3>
-              <div className="h-0.5 w-8 bg-blue-600 mb-4" />
-              <p className="text-stone-500 text-sm leading-relaxed">{p.description}</p>
+              <p className="text-[0.72rem] tracking-[0.12em] uppercase text-blue-600 font-bold mb-3">
+                {p.tagline}
+              </p>
+              <div className="h-0.5 w-8 bg-blue-600 mb-3" />
+              <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">
+                {p.description}
+              </p>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );

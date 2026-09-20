@@ -1,59 +1,101 @@
 "use client";
 
-import Link from "next/link";
 import { useInView } from "@/hooks/useInView";
+import React, { useState } from "react";
 
 export default function Contact() {
-  const { ref, inView } = useInView({ threshold: 0.1 });
+  const { ref: leftRef,  inView: leftIn  } = useInView({ fallbackMs: 600 });
+  const { ref: rightRef, inView: rightIn } = useInView({ fallbackMs: 700 });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    // Future: Handle actual form submission here
+  };
 
   return (
-    <section
-      id="contact"
-      className="bg-stone-900 text-white py-32 lg:py-48"
-    >
-      <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        <div
-          ref={ref as React.RefObject<HTMLDivElement>}
-          className={`max-w-3xl transition-all duration-700 ease-out ${
-            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <span className="text-[0.7rem] tracking-[0.3em] uppercase text-blue-400 font-semibold block mb-6">
-            Get In Touch
-          </span>
+    <section id="contact" className="bg-transparent py-12 lg:py-28">
+      <div className="max-w-7xl mx-auto px-5 lg:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
-          <h2 className="text-5xl sm:text-6xl lg:text-8xl font-black tracking-tight leading-[0.9] mb-8">
-            LET&apos;S BUILD
-            <br />
-            <span className="text-blue-500">SOMETHING.</span>
-          </h2>
-
-          <p className="text-stone-400 text-lg leading-relaxed max-w-xl mb-12">
-            Interested in technology, collaboration, or building something
-            meaningful? Connect with IONCODERS — we&apos;d love to have you as
-            part of the community.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 mb-16">
-            <Link
-              href="mailto:hello@ioncoders.com"
-              className="px-8 py-4 bg-blue-600 text-white text-[0.8rem] tracking-[0.15em] uppercase font-medium hover:bg-blue-500 transition-colors duration-200 text-center"
-            >
+          {/* CTA */}
+          <div
+            ref={leftRef as React.RefObject<HTMLDivElement>}
+            className={`section-hidden ${leftIn ? "section-visible" : ""}`}
+          >
+            <span className="text-[0.62rem] sm:text-[0.68rem] tracking-[0.3em] uppercase text-blue-600 font-bold block mb-4">
               Get In Touch
-            </Link>
-            <Link
-              href="#about"
-              className="px-8 py-4 border border-stone-600 text-stone-300 text-[0.8rem] tracking-[0.15em] uppercase font-medium hover:border-stone-400 hover:text-white transition-colors duration-200 text-center"
-            >
-              Learn More
-            </Link>
+            </span>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-stone-900 dark:text-white tracking-tight leading-[0.9] mb-5 sm:mb-6">
+              LET'S BUILD<br />
+              <span className="text-blue-600 dark:text-blue-500">SOMETHING.</span>
+            </h2>
+            <p className="text-stone-700 dark:text-stone-300 text-sm lg:text-base leading-relaxed mb-8 max-w-md">
+              Ready to turn your idea into a digital reality? Reach out to us to discuss your project requirements, request a quote, or simply say hello.
+            </p>
+            
+            <div className="space-y-4 text-sm text-stone-600 dark:text-stone-400">
+              <p>
+                <strong className="text-stone-900 dark:text-white uppercase tracking-wider text-[0.65rem]">Email:</strong><br />
+                hello@ioncoders.com
+              </p>
+              <p>
+                <strong className="text-stone-900 dark:text-white uppercase tracking-wider text-[0.65rem]">Location:</strong><br />
+                Nairobi, Kenya
+              </p>
+            </div>
           </div>
 
-          {/* Contact note */}
-          <p className="text-stone-600 text-xs tracking-wide">
-            * Contact details above are placeholders. Add your actual email,
-            social profiles, and other channels here.
-          </p>
+          {/* Form */}
+          <div
+            ref={rightRef as React.RefObject<HTMLDivElement>}
+            className={`section-hidden ${rightIn ? "section-visible" : ""}`}
+          >
+            <div className="border border-stone-200 dark:border-stone-800 p-6 sm:p-7 lg:p-9 bg-white/50 dark:bg-stone-950/50 backdrop-blur-sm">
+              <p className="text-[0.62rem] sm:text-[0.65rem] tracking-[0.28em] uppercase text-stone-500 mb-5 sm:mb-6">
+                Project Inquiry
+              </p>
+
+              {submitted ? (
+                <div className="bg-stone-100 dark:bg-stone-900 border-l-4 border-blue-600 p-6">
+                  <h3 className="text-lg font-bold text-stone-900 dark:text-white mb-2">Message Sent</h3>
+                  <p className="text-sm text-stone-600 dark:text-stone-400">Thank you for reaching out. A member of our team will get back to you shortly.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="name" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Name</label>
+                      <input id="name" type="text" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="Jane Doe" required />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="email" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Email</label>
+                      <input id="email" type="email" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="jane@example.com" required />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="service" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Service Needed</label>
+                    <select id="service" className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white appearance-none">
+                      <option>Web Development</option>
+                      <option>Mobile App Development</option>
+                      <option>UI/UX Design</option>
+                      <option>Custom Software</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="message" className="text-[0.65rem] tracking-[0.1em] uppercase text-stone-500 font-bold">Project Details</label>
+                    <textarea id="message" rows={4} className="bg-stone-50 dark:bg-stone-900/50 border border-stone-200 dark:border-stone-800 p-3 text-sm focus:outline-none focus:border-blue-600 dark:focus:border-blue-500 transition-colors text-stone-900 dark:text-white" placeholder="Tell us about your project goals and timeline..." required />
+                  </div>
+                  <button type="submit" className="mt-2 px-6 py-4 bg-blue-600 text-white text-[0.76rem] tracking-[0.14em] uppercase font-bold hover:bg-blue-500 active:scale-[.98] transition-all duration-200 w-full sm:w-auto self-start">
+                    Send Message
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
