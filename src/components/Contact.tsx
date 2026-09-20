@@ -60,7 +60,7 @@ export default function Contact() {
             <div className="space-y-4 text-sm text-stone-600 dark:text-stone-400">
               <p>
                 <strong className="text-stone-900 dark:text-white uppercase tracking-wider text-[0.65rem]">Email:</strong><br />
-                hello@ioncoders.tech
+                ioncoders@protonmail.com
               </p>
               <p>
                 <strong className="text-stone-900 dark:text-white uppercase tracking-wider text-[0.65rem]">Location:</strong><br />
