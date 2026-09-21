@@ -83,7 +83,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT — image */}https://rc.ds.network/
+          {/* RIGHT — image */}
           <div className="anim-fade-up-d2 order-1 lg:order-2 relative h-56 sm:h-72 lg:h-auto lg:min-h-[560px] lg:self-stretch w-full mt-4 lg:mt-0">
             <div className="absolute inset-0 lg:inset-y-16 overflow-hidden bg-stone-200 dark:bg-stone-800">
               <Image
