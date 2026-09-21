@@ -4,7 +4,7 @@
 import Image from "next/image";
 
 const stats = [
-  { value: "15+",       label: "Projects Delivered" },
+  { value: "10+",       label: "Projects Delivered" },
   { value: "100%",      label: "Client Satisfaction" },
   { value: "5+",        label: "Core Experts" },
   { value: "Kenya",     label: "Based In" },
@@ -43,7 +43,7 @@ export default function Hero() {
             </p>
 
             <p className="anim-fade-up-d3 text-sm lg:text-base text-stone-600 dark:text-stone-300 leading-relaxed max-w-[420px] mb-8">
-              A specialized group of software engineers and designers building high-performance web, mobile, and custom software solutions for businesses and startups.
+              A specialized group of software engineers and designers building high-performance web, mobile and custom software solutions for businesses and startups.
             </p>
 
             <div className="anim-fade-up-d4 flex flex-col sm:flex-row gap-3 mb-8 sm:mb-10">
@@ -83,7 +83,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* RIGHT — image */}
+          {/* RIGHT — image */}https://rc.ds.network/
           <div className="anim-fade-up-d2 order-1 lg:order-2 relative h-56 sm:h-72 lg:h-auto lg:min-h-[560px] lg:self-stretch w-full mt-4 lg:mt-0">
             <div className="absolute inset-0 lg:inset-y-16 overflow-hidden bg-stone-200 dark:bg-stone-800">
               <Image
